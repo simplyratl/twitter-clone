@@ -10,7 +10,7 @@ import Button from "../shared/Button";
 import ProfileImage from "../shared/ProfileImage";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { HiOutlinePhoto } from "react-icons/hi2";
+import { HiOutlinePhoto, HiOutlineXMark } from "react-icons/hi2";
 import IconHoverEffect from "~/components/shared/IconHoverEffect";
 
 function updateTextAreaSize(textArea?: HTMLTextAreaElement | null) {
@@ -27,7 +27,8 @@ function Form() {
   const trpcUtils = api.useContext();
   const [error, setError] = useState({ error: false, message: "" });
   const uploadRef = useRef<HTMLInputElement>(null);
-  const [multimedia, setMultimedia] = useState<string | null>(null);
+  const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("");
 
   const inputRef = useCallback((textArea: HTMLTextAreaElement) => {
     updateTextAreaSize(textArea);
@@ -84,17 +85,16 @@ function Form() {
 
   if (session.status !== "authenticated") return null;
 
-  function handleSubmit(e: FormEvent) {
+  const handleFileChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setFile(event.target.files[0]);
+    setFilename(event.target.files[0].name);
+  };
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    createTweet.mutate({ content: inputValue });
+    // createTweet.mutate({ content: inputValue, multimedia });
   }
-
-  useEffect(() => {
-    if (!uploadRef.current?.files[0]) return;
-
-    setMultimedia(URL.createObjectURL(uploadRef.current?.files[0]));
-  }, [uploadRef.current]);
 
   return (
     <form
@@ -104,7 +104,7 @@ function Form() {
       <div className="flex flex-col gap-4">
         <div className="flex gap-4 text-lg">
           <ProfileImage src={session.data.user.image} />
-          <div className="flex flex-col gap-2">
+          <div className="flex w-full flex-col gap-2">
             <textarea
               style={{ height: 0 }}
               value={inputValue}
@@ -116,12 +116,24 @@ function Form() {
               placeholder="What's happening?"
               maxLength={280}
             />
-            {multimedia?.length > 0 && (
-              <img
-                src={multimedia}
-                alt={"upload image"}
-                className="h-full w-full rounded-2xl object-cover"
-              />
+            {file && (
+              <div className="relative">
+                <button
+                  className="absolute left-2 top-2 z-50  flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-2xl text-white"
+                  type={"button"}
+                  onClick={() => {
+                    setFile(null);
+                    setFilename("");
+                  }}
+                >
+                  <HiOutlineXMark />
+                </button>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={"upload image"}
+                  className="h-[400px] w-full rounded-2xl object-cover"
+                />
+              </div>
             )}
           </div>
         </div>
@@ -136,6 +148,7 @@ function Form() {
                 className="hidden"
                 type="file"
                 name="multimedia"
+                onChange={handleFileChange}
                 id="multimedia"
                 ref={uploadRef}
               />

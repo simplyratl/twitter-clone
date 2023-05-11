@@ -54,8 +54,14 @@ export const tweetRouter = createTRPCRouter({
       }
     ),
   create: protectedProcedure
-    .input(z.object({ content: z.string() }))
-    .mutation(async ({ input: { content }, ctx }) => {
+    .input(z.object({ content: z.string(), multimedia: z.string() }))
+    .mutation(async ({ input: { content, multimedia }, ctx }) => {
+      let multmediaUrl = null;
+
+      if (multimedia) {
+        const { createReadStream, filename } = await multimedia;
+      }
+
       return await ctx.prisma.tweet.create({
         data: { content, userId: ctx.session.user.id },
       });
