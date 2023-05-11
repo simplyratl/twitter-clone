@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-white dark:bg-gray-800;
+    }
+}
+
+.ReactModal__Overlay {
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.ReactModal__Content {
+    background: transparent !important;
+    border: none !important;
+}
+
+.Toastify__toast-container {
+    z-index: 999999;
+}

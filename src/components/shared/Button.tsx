@@ -15,6 +15,7 @@ const Button = ({
   gray = false,
   className = "",
   children,
+  ...props
 }: ButtonProps) => {
   const sizeClasses = small ? "px-2 py-1" : "px-4 py-2 font-bold";
   const grayClasses = gray
@@ -24,6 +25,7 @@ const Button = ({
   return (
     <button
       className={`rounded-full text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${sizeClasses} ${grayClasses} ${className}`}
+      {...props}
     >
       {children}
     </button>

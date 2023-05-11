@@ -5,6 +5,7 @@ import InfiniteTweetList from "~/components/InfiniteTweetList";
 import FollowingTweets from "~/components/tweets/FollowingTweets";
 import NewTweetForms from "~/components/tweets/NewTweetForms";
 import { api } from "~/utils/api";
+import Search from "~/components/shared/Search";
 
 const TABS = ["Recent", "Following"];
 
@@ -15,16 +16,21 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-10 border-b bg-white pt-2">
-        <h1 className="mb-2 px-4 text-lg font-bold">Home</h1>
+      <header className="sticky top-0 z-10 border-b pt-2">
+        <h1 className="mb-2 px-4 text-xl font-bold dark:text-white">Explore</h1>
+
+        <div>
+          <Search />
+        </div>
+
         {session.status === "authenticated" && (
           <div className="flex">
             {TABS.map((tab) => (
               <button
                 key={tab}
-                className={`flex-grow p-2 hover:bg-gray-200 focus-visible:bg-gray-200 ${
+                className={`relative flex-grow rounded-sm p-2 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700 ${
                   tab === selectedTab
-                    ? "font bold border-b-4 border-b-blue-500"
+                    ? "before:absolute before:bottom-0 before:left-1/2 before:h-[3px] before:w-[40%] before:-translate-x-1/2 before:rounded-xl before:rounded-tl before:bg-blue-500 before:transition-transform before:duration-300 before:ease-in-out"
                     : ""
                 }`}
                 onClick={() => setSelectedTab(tab)}

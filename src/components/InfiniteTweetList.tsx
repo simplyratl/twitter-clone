@@ -1,11 +1,16 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProfileImage from "./shared/ProfileImage";
 import { useSession } from "next-auth/react";
-import { VscHeartFilled, VscHeart } from "react-icons/vsc";
+import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import IconHoverEffect from "./shared/IconHoverEffect";
 import { api } from "~/utils/api";
+import { HiOutlineXMark } from "react-icons/hi2";
+import ConfirmationModal from "~/components/shared/ConfirmationModal";
+import Modal from "react-modal";
+import { useRouter } from "next/router";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
 type Tweet = {
   id: string;
@@ -20,7 +25,7 @@ type InfiteTweetListProps = {
   isLoading: boolean;
   isError: boolean;
   hasMore: boolean | undefined;
-  fetchNewTweets: () => Promise<unknown>;
+  fetchNewTweets?: () => Promise<unknown>;
   tweets?: Tweet[];
 };
 
@@ -35,11 +40,13 @@ const InfiniteTweetList = ({
   hasMore,
   isLoading,
 }: InfiteTweetListProps) => {
+  const router = useRouter();
+
   if (isLoading) return <h1>Loading...</h1>;
   if (isError) return <h1>Error</h1>;
   if (!tweets) return null;
 
-  if (tweets.length === 0)
+  if (tweets.length === 0 || !tweets)
     return (
       <h2 className="my-4 text-center text-2xl text-gray-500">
         There are no new tweets.
@@ -47,18 +54,30 @@ const InfiniteTweetList = ({
     );
 
   return (
-    <ul>
-      <InfiniteScroll
-        dataLength={tweets.length}
-        next={fetchNewTweets}
-        hasMore={hasMore}
-        loader={"Loading..."}
-      >
-        {tweets.map((tweet) => (
-          <TweetCard key={tweet.id} {...tweet} />
-        ))}
-      </InfiniteScroll>
-    </ul>
+    <>
+      <ul>
+        <InfiniteScroll
+          dataLength={tweets.length}
+          next={fetchNewTweets}
+          hasMore={hasMore}
+          loader={"Loading..."}
+        >
+          <AnimatePresence>
+            {tweets.map((tweet) => (
+              <motion.div
+                key={tweet.id}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+              >
+                <TweetCard {...tweet} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </InfiniteScroll>
+      </ul>
+    </>
   );
 };
 
@@ -71,6 +90,7 @@ function TweetCard({
   likedByMe,
 }: Tweet) {
   const trpcUtils = api.useContext();
+  const session = useSession();
 
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
@@ -119,24 +139,35 @@ function TweetCard({
   }
 
   return (
-    <li className="flex gap-4 border-b px-4 py-4">
+    <li className="relative flex gap-4 border-b border-gray-200 px-4 py-4 dark:border-gray-500">
+      {user.id === session.data?.user.id && (
+        <Link
+          href={`?id=${id}`}
+          as={`/confirmation/${id}`}
+          className="absolute right-2 top-2 cursor-pointer text-2xl hover:text-red-400 dark:text-white"
+        >
+          <HiOutlineXMark />
+        </Link>
+      )}
+
       <Link href={`/profiles/${user.id}`}>
         <ProfileImage src={user.image} />
       </Link>
+
       <div className="flex flex-grow flex-col">
         <div className="flex gap-1">
           <Link
             href={`/profiles/${user.id}`}
-            className="font-bold hover:underline focus-visible:underline"
+            className="font-bold hover:underline focus-visible:underline dark:text-white"
           >
             {user.name}
-            <span className="text-gray-500">-</span>
-            <span className="text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-gray-400"> </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {dateTimeFormatter.format(createdAt)}
             </span>
           </Link>
         </div>
-        <p className="whitespace-pre-wrap">{content}</p>
+        <p className="whitespace-pre-wrap dark:text-white">{content}</p>
         <HeartButton
           onClick={handleToggleLike}
           isLoading={toggleLike.isLoading}
