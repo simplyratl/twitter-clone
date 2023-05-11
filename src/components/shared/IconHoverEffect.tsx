@@ -28,13 +28,15 @@ const IconHoverEffect = ({
         "outline-blue-500 hover:bg-blue-100 group-hover:bg-blue-900 dark:hover:bg-blue-900 group-focus-visible:bg-blue-200 dark:group-hover:bg-blue-300 dark:group-focus-visible:bg-blue-400 focus-visible:bg-blue-200";
     } else if (gray) {
       colorClasses =
-        "outline-gray-400 hover:bg-gray-200 group-hover:bg-gray-200 group-focus-visible:bg-gray-200 dark:group-hover:bg-gray-300 dark:group-focus-visible:bg-gray-400 focus-visible:bg-gray-200";
+        "outline-gray-400 hover:bg-gray-200 dark:hover:bg-neutral-900 group-hover:bg-gray-200 group-focus-visible:bg-gray-200 dark:group-hover:bg-gray-300 dark:group-focus-visible:bg-gray-400 focus-visible:bg-gray-200";
     }
 
     setClassName(
-      `-ml-2 select-none cursor-pointer rounded-full bg-opacity-50 p-2 transition-colors duration-200 ${colorClasses}`
+      `-ml-2 select-none cursor-pointer rounded-full bg-opacity-50 p-2 transition-colors duration-200 ${colorClasses} ${
+        active ? "bg-blue-500 bg-opacity-100" : ""
+      }`
     );
-  }, [red, active, gray]);
+  }, [red, gray, blue, active]);
 
   return <div className={className}>{children}</div>;
 };

@@ -11,6 +11,7 @@ import ConfirmationModal from "~/components/shared/ConfirmationModal";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import Image from "next/image";
 
 type Tweet = {
   id: string;
@@ -19,6 +20,7 @@ type Tweet = {
   likeCount: number;
   likedByMe: boolean;
   user: { id: string; image: string | null; name: string | null };
+  image?: string;
 };
 
 type InfiteTweetListProps = {
@@ -81,13 +83,14 @@ const InfiniteTweetList = ({
   );
 };
 
-function TweetCard({
+export function TweetCard({
   id,
   user,
   content,
   createdAt,
   likeCount,
   likedByMe,
+  image,
 }: Tweet) {
   const trpcUtils = api.useContext();
   const session = useSession();
@@ -139,7 +142,7 @@ function TweetCard({
   }
 
   return (
-    <li className="relative flex gap-4 border-b border-gray-200 px-4 py-4 dark:border-gray-500">
+    <li className="relative flex gap-2 border-b border-gray-200 p-4 hover:bg-neutral-100 dark:border-gray-500 dark:hover:bg-neutral-950">
       {user.id === session.data?.user.id && (
         <Link
           href={`?id=${id}`}
@@ -150,24 +153,37 @@ function TweetCard({
         </Link>
       )}
 
-      <Link href={`/profiles/${user.id}`}>
+      <Link className="items-start" href={`/profiles/${user.id}`}>
         <ProfileImage src={user.image} />
       </Link>
 
       <div className="flex flex-grow flex-col">
-        <div className="flex gap-1">
-          <Link
-            href={`/profiles/${user.id}`}
-            className="font-bold hover:underline focus-visible:underline dark:text-white"
-          >
-            {user.name}
-            <span className="text-sm text-gray-500 dark:text-gray-400"> </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {dateTimeFormatter.format(createdAt)}
-            </span>
-          </Link>
-        </div>
-        <p className="whitespace-pre-wrap dark:text-white">{content}</p>
+        <Link href={`/post/${id}`} className="flex flex-grow flex-col">
+          <div className="flex gap-1">
+            <Link
+              href={`/profiles/${user.id}`}
+              className="font-bold hover:underline focus-visible:underline dark:text-white"
+            >
+              {user.name}
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {" "}
+              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {dateTimeFormatter.format(createdAt)}
+              </span>
+            </Link>
+          </div>
+          <p className="whitespace-pre-wrap dark:text-white">{content}</p>
+          {/*{image && <Image fill src={image} alt={id} className="w-full" />}*/}
+          {image && (
+            <img
+              src={image}
+              alt={id}
+              className="mb-4 mt-4 h-[400px] w-full rounded-2xl object-cover"
+            />
+          )}
+        </Link>
+
         <HeartButton
           onClick={handleToggleLike}
           isLoading={toggleLike.isLoading}

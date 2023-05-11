@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { HiOutlinePhoto, HiOutlineXMark } from "react-icons/hi2";
 import IconHoverEffect from "~/components/shared/IconHoverEffect";
+import imagekit from "../../../imagekit/imagekit";
+import { v4 as uuidv4 } from "uuid";
 
 function updateTextAreaSize(textArea?: HTMLTextAreaElement | null) {
   if (!textArea) return;
@@ -67,6 +69,7 @@ function Form() {
             name: session.data.user.name || null,
             image: session.data.user.image || null,
           },
+          image: newTweet.multimedia || null,
         };
 
         return {
@@ -93,7 +96,18 @@ function Form() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    // createTweet.mutate({ content: inputValue, multimedia });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    const fileName = `${filename}${uuidv4()}`;
+
+    const response = await imagekit.upload({
+      file,
+      fileName: fileName,
+    });
+
+    setFile(null);
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    createTweet.mutate({ content: inputValue, multimedia: response.url });
   }
 
   return (

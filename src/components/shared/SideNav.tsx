@@ -22,9 +22,9 @@ const SideNav = () => {
       <ul className="flex flex-col items-start gap-2 whitespace-nowrap">
         <li>
           <Link href="/">
-            <IconHoverEffect active={router.pathname === "/" ? true : false}>
+            <IconHoverEffect gray>
               <span
-                className={`flex items-center gap-2 px-3 px-3 ${
+                className={`flex items-center gap-2 px-3 ${
                   router.pathname === "/" ? "font-bold" : ""
                 }`}
               >
@@ -37,11 +37,9 @@ const SideNav = () => {
         <li>
           {user && (
             <Link href={`/profiles/${user.id}`}>
-              <IconHoverEffect
-                active={router.pathname.includes("/profiles") ? true : false}
-              >
+              <IconHoverEffect gray>
                 <span
-                  className={`flex items-center gap-2 px-3 px-3 ${
+                  className={`flex items-center gap-2 px-3 ${
                     router.pathname.includes("/profiles") ? "font-bold" : ""
                   }`}
                 >
@@ -70,7 +68,7 @@ const SideNav = () => {
         {user && (
           <li>
             <button onClick={() => void signOut()} className="">
-              <IconHoverEffect>
+              <IconHoverEffect gray>
                 <span className="flex items-center gap-2 px-3">
                   <HiOutlineArrowLeftOnRectangle className="h-8 w-8" />
                   <span className="hidden text-xl md:inline">Log out</span>

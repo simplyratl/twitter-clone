@@ -56,14 +56,8 @@ export const tweetRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ content: z.string(), multimedia: z.string() }))
     .mutation(async ({ input: { content, multimedia }, ctx }) => {
-      let multmediaUrl = null;
-
-      if (multimedia) {
-        const { createReadStream, filename } = await multimedia;
-      }
-
       return await ctx.prisma.tweet.create({
-        data: { content, userId: ctx.session.user.id },
+        data: { content, userId: ctx.session.user.id, multimedia },
       });
     }),
   toggleLike: protectedProcedure
@@ -93,6 +87,37 @@ export const tweetRouter = createTRPCRouter({
       } else {
         return { deleted: false };
       }
+    }),
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input: { id }, ctx }) => {
+      const tweet = await ctx.prisma.tweet.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          user: { select: { name: true, id: true, image: true } },
+          multimedia: true,
+          content: true,
+          createdAt: true,
+          _count: {
+            select: { likes: true },
+          },
+          likes: !ctx.session?.user.id,
+        },
+      });
+
+      if (!tweet) return;
+
+      return {
+        id: tweet.id,
+        user: tweet.user,
+        image: tweet.multimedia,
+        content: tweet.content,
+        createdAt: tweet.createdAt,
+        likeCount: tweet._count.likes,
+        likes: tweet.likes,
+        likedByMe: tweet.likes?.length > 0,
+      };
     }),
 });
 
@@ -124,6 +149,7 @@ async function getInfiniteTweets({
       user: {
         select: { name: true, id: true, image: true },
       },
+      multimedia: true,
     },
   });
 
@@ -146,6 +172,7 @@ async function getInfiniteTweets({
         likeCount: tweet._count.likes,
         user: tweet.user,
         likedByMe: tweet.likes?.length > 0,
+        image: tweet.multimedia,
       };
     }),
     nextCursor,
