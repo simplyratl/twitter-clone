@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-10 border-b pt-2">
+      <header className="sticky top-0 z-10 border-b pt-2 dark:border-gray-500">
         <h1 className="mb-2 px-4 text-xl font-bold dark:text-white">Explore</h1>
 
         <div>

@@ -14,6 +14,8 @@ import { HiOutlinePhoto, HiOutlineXMark } from "react-icons/hi2";
 import IconHoverEffect from "~/components/shared/IconHoverEffect";
 import imagekit from "../../../imagekit/imagekit";
 import { v4 as uuidv4 } from "uuid";
+import Modal from "react-modal";
+import LoadingModal from "~/components/shared/LoadingModal";
 
 function updateTextAreaSize(textArea?: HTMLTextAreaElement | null) {
   if (!textArea) return;
@@ -95,89 +97,100 @@ function Form() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    let response = null;
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    const fileName = `${filename}${uuidv4()}`;
+    if (file) {
+      const fileName = `${filename}${uuidv4()}`;
 
-    const response = await imagekit.upload({
-      file,
-      fileName: fileName,
-    });
+      response = await imagekit.upload({
+        file,
+        fileName: fileName,
+      });
 
-    setFile(null);
+      setFile(null);
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    createTweet.mutate({ content: inputValue, multimedia: response.url });
+    createTweet.mutate({
+      content: inputValue,
+      multimedia: response?.url,
+    });
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-2 border-b px-4 py-2 dark:border-gray-500"
-    >
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-4 text-lg">
-          <ProfileImage src={session.data.user.image} />
-          <div className="flex w-full flex-col gap-2">
-            <textarea
-              style={{ height: 0 }}
-              value={inputValue}
-              ref={inputRef}
-              onChange={(e) => setInputValue(e.target.value)}
-              className={`w-full resize-none overflow-hidden border-b p-4 dark:border-gray-500 dark:bg-black dark:text-white ${
-                error.error ? "outline outline-red-500" : "outline-none"
-              }`}
-              placeholder="What's happening?"
-              maxLength={280}
-            />
-            {file && (
-              <div className="relative">
-                <button
-                  className="absolute left-2 top-2 z-50  flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-2xl text-white"
-                  type={"button"}
-                  onClick={() => {
-                    setFile(null);
-                    setFilename("");
-                  }}
-                >
-                  <HiOutlineXMark />
-                </button>
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={"upload image"}
-                  className="h-[400px] w-full rounded-2xl object-cover"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-        <div
-          className="ml-16 flex items-start gap-2 text-2xl text-blue-400
-        "
-        >
-          <div onClick={() => uploadRef.current?.click()}>
-            <IconHoverEffect blue>
-              <HiOutlinePhoto />
-              <input
-                className="hidden"
-                type="file"
-                name="multimedia"
-                onChange={handleFileChange}
-                id="multimedia"
-                ref={uploadRef}
+    <>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-2 border-b px-4 py-2 dark:border-gray-500"
+      >
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4 text-lg">
+            <ProfileImage src={session.data.user.image} />
+            <div className="flex w-full flex-col gap-2">
+              <textarea
+                style={{ height: 0 }}
+                value={inputValue}
+                ref={inputRef}
+                onChange={(e) => setInputValue(e.target.value)}
+                className={`w-full resize-none overflow-hidden border-b p-4 dark:border-gray-500 dark:bg-black dark:text-white ${
+                  error.error ? "outline outline-red-500" : "outline-none"
+                }`}
+                placeholder="What's happening?"
+                maxLength={280}
               />
-            </IconHoverEffect>
+              {file && (
+                <div className="relative">
+                  <button
+                    className="absolute left-2 top-2 z-50  flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-2xl text-white"
+                    type={"button"}
+                    onClick={() => {
+                      setFile(null);
+                      setFilename("");
+                    }}
+                  >
+                    <HiOutlineXMark />
+                  </button>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={"upload image"}
+                    className="h-[400px] w-full rounded-2xl object-cover"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+          <div
+            className="ml-16 flex items-start gap-2 text-2xl text-blue-400
+        "
+          >
+            <div onClick={() => uploadRef.current?.click()}>
+              <IconHoverEffect blue>
+                <HiOutlinePhoto />
+                <input
+                  className="hidden"
+                  type="file"
+                  name="multimedia"
+                  onChange={handleFileChange}
+                  id="multimedia"
+                  ref={uploadRef}
+                />
+              </IconHoverEffect>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex items-center justify-between">
-        <span className="dark:text-gray-300">
-          Characters {inputValue.length} / 280
-        </span>
-        <Button className="self-end">Tweet</Button>
-      </div>
-    </form>
+        <div className="flex items-center justify-between">
+          <span className="dark:text-gray-300">
+            Characters {inputValue.length} / 280
+          </span>
+          <Button className="self-end">Tweet</Button>
+        </div>
+      </form>
+      <Modal isOpen={createTweet.isLoading}>
+        <LoadingModal />
+      </Modal>
+    </>
   );
 }
 

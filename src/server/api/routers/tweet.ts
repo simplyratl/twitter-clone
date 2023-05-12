@@ -54,8 +54,9 @@ export const tweetRouter = createTRPCRouter({
       }
     ),
   create: protectedProcedure
-    .input(z.object({ content: z.string(), multimedia: z.string() }))
+    .input(z.object({ content: z.string(), multimedia: z.string().nullable() }))
     .mutation(async ({ input: { content, multimedia }, ctx }) => {
+      console.log(multimedia);
       return await ctx.prisma.tweet.create({
         data: { content, userId: ctx.session.user.id, multimedia },
       });
@@ -118,6 +119,55 @@ export const tweetRouter = createTRPCRouter({
         likes: tweet.likes,
         likedByMe: tweet.likes?.length > 0,
       };
+    }),
+  addComment: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        postId: z.string(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input: { userId, postId, content }, ctx }) => {
+      if (!content) return;
+
+      const tweet = await ctx.prisma.tweet.findUnique({
+        where: { id: postId },
+      });
+
+      if (!tweet) {
+        throw new Error(`Tweet with ID ${postId} not found`);
+      }
+
+      await ctx.prisma.comment.create({
+        data: {
+          content,
+          userId,
+          tweetId: postId,
+        },
+      });
+
+      return {
+        userId,
+        postId,
+        content,
+      };
+    }),
+  getComments: publicProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ input: { postId }, ctx }) => {
+      const comments = await ctx.prisma.comment.findMany({
+        where: { tweetId: postId },
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: { select: { name: true, id: true, image: true } },
+        },
+      });
+
+      return comments;
     }),
 });
 

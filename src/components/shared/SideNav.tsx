@@ -10,6 +10,7 @@ import {
 } from "react-icons/hi2";
 import useColorMode from "~/utils/hooks/useColorMode";
 import { useRouter } from "next/router";
+import { HiOutlineBell } from "react-icons/hi2";
 
 const SideNav = () => {
   const session = useSession();
@@ -23,13 +24,37 @@ const SideNav = () => {
         <li>
           <Link href="/">
             <IconHoverEffect gray>
+              <span className={`flex items-center gap-3 px-3`}>
+                <HiHashtag className="h-9 w-9" />
+                <span
+                  className={`hidden text-[1.2rem] font-medium md:inline ${
+                    router.pathname === "/" ? "font-bold" : ""
+                  }`}
+                >
+                  Explore
+                </span>
+              </span>
+            </IconHoverEffect>
+          </Link>
+        </li>
+        <li>
+          <Link href="/">
+            <IconHoverEffect gray>
               <span
-                className={`flex items-center gap-2 px-3 ${
-                  router.pathname === "/" ? "font-bold" : ""
+                className={`flex items-center gap-3 px-3 ${
+                  router.pathname === "/notifications" ? "font-extrabold" : ""
                 }`}
               >
-                <HiHashtag className="h-8 w-8" />
-                <span className="hidden text-xl md:inline">Explore</span>
+                <div className="relative">
+                  <span className="absolute right-0 top-0 inline-flex h-5 w-5 animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                  <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-sm text-white">
+                    1
+                  </span>
+                  <HiOutlineBell className="h-9 w-9" />
+                </div>
+                <span className="hidden text-[1.2rem] font-medium md:inline">
+                  Notifications
+                </span>
               </span>
             </IconHoverEffect>
           </Link>
@@ -39,12 +64,14 @@ const SideNav = () => {
             <Link href={`/profiles/${user.id}`}>
               <IconHoverEffect gray>
                 <span
-                  className={`flex items-center gap-2 px-3 ${
-                    router.pathname.includes("/profiles") ? "font-bold" : ""
+                  className={`flex items-center gap-3 px-3 ${
+                    router.pathname.includes("/profiles") ? "font-black" : ""
                   }`}
                 >
-                  <HiOutlineUser className="h-8 w-8" />
-                  <span className="hidden text-xl md:inline">Profile</span>
+                  <HiOutlineUser className="h-9 w-9" />
+                  <span className="hidden text-[1.2rem] font-medium md:inline">
+                    Profile
+                  </span>
                 </span>
               </IconHoverEffect>
             </Link>
@@ -55,9 +82,9 @@ const SideNav = () => {
         >
           <div className="cursor-pointer">
             <IconHoverEffect gray active={colorMode === "dark"}>
-              <span className="flex items-center gap-2 px-3">
-                <HiSun className="h-8 w-8" />
-                <span className="hidden text-xl md:inline">
+              <span className="flex items-center gap-3 px-3">
+                <HiSun className="h-9 w-9" />
+                <span className="hidden text-[1.2rem] font-medium md:inline">
                   Toggle Dark Mode
                 </span>
               </span>
@@ -69,9 +96,11 @@ const SideNav = () => {
           <li>
             <button onClick={() => void signOut()} className="">
               <IconHoverEffect gray>
-                <span className="flex items-center gap-2 px-3">
-                  <HiOutlineArrowLeftOnRectangle className="h-8 w-8" />
-                  <span className="hidden text-xl md:inline">Log out</span>
+                <span className="flex items-center gap-3 px-3">
+                  <HiOutlineArrowLeftOnRectangle className="h-9 w-9" />
+                  <span className="hidden text-[1.2rem] font-medium md:inline">
+                    Log out
+                  </span>
                 </span>
               </IconHoverEffect>
             </button>
@@ -83,8 +112,10 @@ const SideNav = () => {
             <button onClick={() => void signIn()} className="">
               <IconHoverEffect>
                 <span className="flex items-center gap-2 px-3">
-                  <HiOutlineUser className="h-8 w-8" />
-                  <span className="hidden text-xl md:inline">Log in</span>
+                  <HiOutlineUser className="h-9 w-9" />
+                  <span className="hidden text-[1.2rem] font-medium md:inline">
+                    Log in
+                  </span>
                 </span>
               </IconHoverEffect>
             </button>

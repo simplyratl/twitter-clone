@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import Image from "next/image";
 
-type Tweet = {
+export type Tweet = {
   id: string;
   content: string;
   createdAt: Date;
@@ -31,7 +31,7 @@ type InfiteTweetListProps = {
   tweets?: Tweet[];
 };
 
-const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
+export const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "short",
 });
 
@@ -142,54 +142,56 @@ export function TweetCard({
   }
 
   return (
-    <li className="relative flex gap-2 border-b border-gray-200 p-4 hover:bg-neutral-100 dark:border-gray-500 dark:hover:bg-neutral-950">
-      {user.id === session.data?.user.id && (
-        <Link
-          href={`?id=${id}`}
-          as={`/confirmation/${id}`}
-          className="absolute right-2 top-2 cursor-pointer text-2xl hover:text-red-400 dark:text-white"
-        >
-          <HiOutlineXMark />
-        </Link>
-      )}
+    <li className="relative flex flex-col gap-2 overflow-hidden border-b border-gray-200  hover:bg-neutral-100 dark:border-gray-500 dark:hover:bg-neutral-950">
+      <div className="flex gap-2 border-b p-4 dark:border-gray-500">
+        {user.id === session.data?.user.id && (
+          <Link
+            href={`?id=${id}`}
+            as={`/confirmation/${id}`}
+            className="absolute right-2 top-2 cursor-pointer rounded-lg text-2xl hover:bg-neutral-200 hover:text-red-400 dark:text-white dark:hover:bg-neutral-600"
+          >
+            <HiOutlineXMark />
+          </Link>
+        )}
 
-      <Link className="items-start" href={`/profiles/${user.id}`}>
-        <ProfileImage src={user.image} />
-      </Link>
-
-      <div className="flex flex-grow flex-col">
-        <Link href={`/post/${id}`} className="flex flex-grow flex-col">
-          <div className="flex gap-1">
-            <Link
-              href={`/profiles/${user.id}`}
-              className="font-bold hover:underline focus-visible:underline dark:text-white"
-            >
-              {user.name}
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {" "}
-              </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {dateTimeFormatter.format(createdAt)}
-              </span>
-            </Link>
-          </div>
-          <p className="whitespace-pre-wrap dark:text-white">{content}</p>
-          {/*{image && <Image fill src={image} alt={id} className="w-full" />}*/}
-          {image && (
-            <img
-              src={image}
-              alt={id}
-              className="mb-4 mt-4 h-[400px] w-full rounded-2xl object-cover"
-            />
-          )}
+        <Link className="items-start" href={`/profiles/${user.id}`}>
+          <ProfileImage src={user.image} />
         </Link>
 
-        <HeartButton
-          onClick={handleToggleLike}
-          isLoading={toggleLike.isLoading}
-          likedByMe={likedByMe}
-          likeCount={likeCount}
-        />
+        <div className="flex flex-grow flex-col">
+          <Link href={`/post/${id}`} className="flex flex-grow flex-col">
+            <div className="flex gap-1">
+              <Link
+                href={`/profiles/${user.id}`}
+                className="font-bold hover:underline focus-visible:underline dark:text-white"
+              >
+                {user.name}
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {" "}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {dateTimeFormatter.format(createdAt)}
+                </span>
+              </Link>
+            </div>
+            <p className="whitespace-pre-wrap dark:text-white">{content}</p>
+            {/*{image && <Image fill src={image} alt={id} className="w-full" />}*/}
+            {image && (
+              <img
+                src={image}
+                alt={id}
+                className="mb-4 mt-4 h-[400px] w-full rounded-2xl object-cover"
+              />
+            )}
+          </Link>
+
+          <HeartButton
+            onClick={handleToggleLike}
+            isLoading={toggleLike.isLoading}
+            likedByMe={likedByMe}
+            likeCount={likeCount}
+          />
+        </div>
       </div>
     </li>
   );
@@ -202,7 +204,7 @@ type HeartButtonProps = {
   likeCount: number;
 };
 
-function HeartButton({
+export function HeartButton({
   likedByMe,
   likeCount,
   isLoading,

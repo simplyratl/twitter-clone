@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { type Theme, toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const ConfirmationModal = () => {
   const session = useSession();
@@ -66,17 +67,24 @@ const ConfirmationModal = () => {
   }, [deletePost.isSuccess]);
 
   return (
-    <div
+    <motion.div
       id="popup-modal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       tabIndex={-1}
       className="flex h-[calc(100%-1rem)] max-h-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0"
     >
-      <div className="relative max-h-full w-full max-w-md">
-        <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
+      <motion.div
+        initial={{ y: 20 }}
+        animate={{ y: 0 }}
+        className="relative max-h-full w-full max-w-md"
+      >
+        <div className="relative rounded-lg bg-white shadow dark:bg-neutral-800">
           <button
             type="button"
             disabled={deletePost.isLoading}
-            className="absolute right-2.5 top-3 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+            className="absolute right-2.5 top-3 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-neutral-600 dark:hover:text-white"
             data-modal-hide="popup-modal"
             onClick={() => router.back()}
           >
@@ -119,7 +127,7 @@ const ConfirmationModal = () => {
                 data-modal-hide="popup-modal"
                 type="button"
                 disabled={deletePost.isLoading}
-                className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+                className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-neutral-600 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
               >
                 No, cancel
               </button>
@@ -136,8 +144,8 @@ const ConfirmationModal = () => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
