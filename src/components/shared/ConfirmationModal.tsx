@@ -45,9 +45,20 @@ const ConfirmationModal = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          theme: localStorage.getItem("color-theme") as Theme,
+          theme: "dark",
         });
         return oldData;
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     },
   });

@@ -83,6 +83,12 @@ export const tweetRouter = createTRPCRouter({
     .mutation(async ({ input: { userId, postId }, ctx }) => {
       const currentUserID = ctx.session?.user.id;
       if (currentUserID === userId) {
+        await ctx.prisma.comment.deleteMany({
+          where: {
+            tweetId: postId,
+          },
+        });
+
         await ctx.prisma.tweet.delete({ where: { id: postId } });
         return { deleted: true };
       } else {
@@ -101,7 +107,7 @@ export const tweetRouter = createTRPCRouter({
           content: true,
           createdAt: true,
           _count: {
-            select: { likes: true },
+            select: { likes: true, comments: true },
           },
           likes: !ctx.session?.user.id,
         },
@@ -118,47 +124,48 @@ export const tweetRouter = createTRPCRouter({
         likeCount: tweet._count.likes,
         likes: tweet.likes,
         likedByMe: tweet.likes?.length > 0,
+        commentCount: tweet._count.comments,
       };
     }),
   addComment: protectedProcedure
     .input(
       z.object({
         userId: z.string(),
-        postId: z.string(),
+        postId: z.string().nullable(),
         content: z.string(),
       })
     )
     .mutation(async ({ input: { userId, postId, content }, ctx }) => {
       if (!content) return;
+      if (content.length < 1) throw new Error("Comment too short");
+      if (content.length > 280) throw new Error("Comment too long");
+      if (userId.length === 0) throw new Error("User not provided");
+      if (!postId) throw new Error("Post not provided");
 
-      const tweet = await ctx.prisma.tweet.findUnique({
-        where: { id: postId },
-      });
-
-      if (!tweet) {
-        throw new Error(`Tweet with ID ${postId} not found`);
-      }
-
-      await ctx.prisma.comment.create({
+      const comment = await ctx.prisma.comment.create({
         data: {
           content,
           userId,
           tweetId: postId,
         },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: { select: { name: true, id: true, image: true } },
+        },
       });
 
-      return {
-        userId,
-        postId,
-        content,
-      };
+      return comment;
     }),
   getComments: publicProcedure
-    .input(z.object({ postId: z.string() }))
+    .input(z.object({ postId: z.string().nullable() }))
     .query(async ({ input: { postId }, ctx }) => {
+      if (!postId) throw new Error("Post not provided");
+
       const comments = await ctx.prisma.comment.findMany({
         where: { tweetId: postId },
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
         select: {
           id: true,
           content: true,
@@ -193,7 +200,7 @@ async function getInfiniteTweets({
       content: true,
       createdAt: true,
       _count: {
-        select: { likes: true },
+        select: { likes: true, comments: true },
       },
       likes: !currentUserID ? false : { where: { userId: currentUserID } },
       user: {
@@ -223,6 +230,7 @@ async function getInfiniteTweets({
         user: tweet.user,
         likedByMe: tweet.likes?.length > 0,
         image: tweet.multimedia,
+        commentCount: tweet._count.comments,
       };
     }),
     nextCursor,

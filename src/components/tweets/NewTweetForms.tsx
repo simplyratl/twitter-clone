@@ -16,8 +16,10 @@ import imagekit from "../../../imagekit/imagekit";
 import { v4 as uuidv4 } from "uuid";
 import Modal from "react-modal";
 import LoadingModal from "~/components/shared/LoadingModal";
+import TweetInput from "../shared/TweetInput";
+import Image from "next/image";
 
-function updateTextAreaSize(textArea?: HTMLTextAreaElement | null) {
+export function updateTextAreaSize(textArea?: HTMLTextAreaElement | null) {
   if (!textArea) return;
 
   textArea.style.height = "0";
@@ -114,7 +116,7 @@ function Form() {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     createTweet.mutate({
       content: inputValue,
-      multimedia: response?.url,
+      multimedia: response?.url ?? null,
     });
   }
 
@@ -128,16 +130,11 @@ function Form() {
           <div className="flex gap-4 text-lg">
             <ProfileImage src={session.data.user.image} />
             <div className="flex w-full flex-col gap-2">
-              <textarea
-                style={{ height: 0 }}
-                value={inputValue}
-                ref={inputRef}
-                onChange={(e) => setInputValue(e.target.value)}
-                className={`w-full resize-none overflow-hidden border-b p-4 dark:border-gray-500 dark:bg-black dark:text-white ${
-                  error.error ? "outline outline-red-500" : "outline-none"
-                }`}
-                placeholder="What's happening?"
-                maxLength={280}
+              <TweetInput
+                inputRef={inputRef}
+                error={error}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
               />
               {file && (
                 <div className="relative">
@@ -151,10 +148,12 @@ function Form() {
                   >
                     <HiOutlineXMark />
                   </button>
-                  <img
+                  <Image
                     src={URL.createObjectURL(file)}
                     alt={"upload image"}
-                    className="h-[400px] w-full rounded-2xl object-cover"
+                    width={400}
+                    height={400}
+                    className="rounded-xl"
                   />
                 </div>
               )}
