@@ -118,15 +118,15 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
       <div className="flex gap-3">
         {tweet.user && (
           <div className="h-fit flex-shrink-0">
-            <Link href={`/profiles/${tweet.user.id}`}>
+            <Link href={`/profile/${tweet.user.id}`}>
               <ProfileImage src={tweet.user.image || ""} />
             </Link>
           </div>
         )}
         <div>
           <div className="flex gap-2">
-            <Link href={`/profiles/7a7sd7a`}>
-              <p className="text-lg text-black dark:text-white">
+            <Link href={`/profile/${tweet.user.id}`}>
+              <p className="text-lg text-black hover:link dark:text-white">
                 {tweet.user.name}
               </p>
             </Link>
@@ -151,9 +151,8 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
                       src={tweet.multimedia}
                       alt="Image"
                       fill
-                      className="!relative max-h-[500px]"
+                      className="!relative max-h-full sm:max-h-[500px]"
                     />
-
                   </>
                 ) : (
                   <video

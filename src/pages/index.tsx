@@ -4,6 +4,7 @@ import AddTweet from "~/components/shared/AddTweet";
 import { useSession } from "next-auth/react";
 import TweetList from "~/components/shared/Tweets/TweetList";
 import { api } from "~/utils/api";
+import LoadingModal from "~/components/shared/LoadingModal";
 
 function RecentTweets() {
   const tweets = api.tweet.infiniteFeed.useInfiniteQuery(

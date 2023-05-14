@@ -13,11 +13,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className="bg-white dark:bg-black">
-        <div className="mx-auto flex max-w-4xl px-4">
+      <div className="bg-white pb-32 dark:bg-black sm:p-0">
+        <div className="mx-auto flex max-w-4xl sm:justify-between md:px-4 lg:justify-start">
           <SideNavigation />
 
-          <main className="flex-[6] border-l border-r dark:border-neutral-700 md:flex-[3]">
+          <main className="flex-[6] dark:border-neutral-700 sm:border-l sm:border-r md:flex-[3]">
             <Component {...pageProps} />
           </main>
         </div>
