@@ -6,50 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
-
-model Tweet {
-  id         String   @id @default(uuid())
-  userId     String
-  content    String
-  multimedia String?
-  createdAt  DateTime @default(now())
-
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes    Like[]
-  comments Comment[] 
-
-  @@unique([createdAt, id])
-  @@index([userId])
-}
-
-model Like {
-  userId  String
-  tweetId String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-
-  @@id([userId, tweetId])
-  @@index([userId])
-  @@index([tweetId])
-}
-
-model Comment {
-  id        String   @id @default(uuid())
-  userId    String
-  content   String
-  createdAt DateTime @default(now())
-  tweetId   String
-
-  user  User  @relation(fields: [userId], references: [id])
-  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-
-  @@unique([createdAt, id])
-  @@index([tweetId])
-  @@index([userId])
+  provider = "postgresql"
+  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  url      = env("DATABASE_URL")
 }
 
 // Necessary for Next auth
@@ -69,7 +31,6 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@index([userId])
 }
 
 model Session {
@@ -78,8 +39,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
 }
 
 model User {
@@ -90,12 +49,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
-  tweets    Tweet[]
-  likes     Like[]
-  followers User[]    @relation(name: "Followers")
-  follows   User[]    @relation(name: "Followers")
-  Comment   Comment[]
 }
 
 model VerificationToken {

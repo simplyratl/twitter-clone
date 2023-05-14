@@ -7,15 +7,6 @@ await import("./src/env.mjs");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  images: {
-    domains: [
-      "cdn.discordapp.com",
-      "avatars.githubusercontent.com",
-      "i.redd.it",
-      "ik.imagekit.io",
-      "lh3.googleusercontent.com",
-    ],
-  },
 
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config

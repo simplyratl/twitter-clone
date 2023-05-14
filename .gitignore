@@ -8,8 +8,6 @@
 # testing
 /coverage
 
-./idea
-
 # database
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
@@ -42,3 +40,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+yarn.lock
