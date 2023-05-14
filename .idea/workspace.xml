@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a3c5f5-1851-4709-9294-13f29c8016e6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shared/AddTweet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/AddTweet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shared/Tweets/Tweet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/Tweets/Tweet.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/api/routers/tweet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/routers/tweet.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +55,7 @@
       <updated>1684057626818</updated>
       <workItem from="1684057628049" duration="1779000" />
       <workItem from="1684059427121" duration="3169000" />
-      <workItem from="1684063192605" duration="191000" />
+      <workItem from="1684063192605" duration="28945000" />
     </task>
     <servers />
   </component>

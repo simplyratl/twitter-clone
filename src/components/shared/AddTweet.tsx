@@ -13,6 +13,7 @@ import HoverEffect from "~/utils/style/HoverEffect";
 import { api } from "~/utils/api";
 import Button from "~/components/shared/Button";
 import { CDNURL, supabase } from "../../../supabase";
+import Image from "next/image";
 
 const AddTweet = () => {
   const session = useSession();
@@ -169,10 +170,11 @@ const AddTweet = () => {
                 </button>
                 <div className="w-fit overflow-hidden rounded-2xl">
                   {file.type.includes("image") ? (
-                    <img
+                    <Image
                       src={URL.createObjectURL(file)}
                       alt="Image"
-                      className="max-h-[500px]"
+                      fill
+                      className="!relative max-h-[500px]"
                     />
                   ) : (
                     <video

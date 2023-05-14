@@ -7,9 +7,10 @@ import {
 } from "react-icons/hi2";
 import HoverEffect from "~/utils/style/HoverEffect";
 import Link from "next/link";
-import { TweetProps } from "~/components/shared/Tweets/TweetList";
+import { type TweetProps } from "~/components/shared/Tweets/TweetList";
 import moment from "moment";
 import { api } from "~/utils/api";
+import Image from "next/image";
 
 const CommentIcon = () => {
   return (
@@ -143,13 +144,17 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
             <p className="text-black dark:text-white">{tweet.content}</p>
 
             {tweet.multimedia && (
-              <div className="w-fit overflow-hidden rounded-2xl">
+              <div className="relative h-full w-fit overflow-hidden rounded-2xl">
                 {tweet.multimediaType === "image" ? (
-                  <img
-                    src={tweet.multimedia}
-                    alt="Image"
-                    className="max-h-[500px]"
-                  />
+                  <>
+                    <Image
+                      src={tweet.multimedia}
+                      alt="Image"
+                      fill
+                      className="!relative max-h-[500px]"
+                    />
+
+                  </>
                 ) : (
                   <video
                     src={tweet.multimedia}

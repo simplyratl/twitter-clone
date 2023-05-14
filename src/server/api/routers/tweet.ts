@@ -5,7 +5,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { Like } from ".prisma/client";
+import { type Like } from ".prisma/client";
 
 export const tweetRouter = createTRPCRouter({
   create: protectedProcedure

@@ -15,6 +15,7 @@ function RecentTweets() {
 
   return (
     <TweetList
+      //eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
       isError={tweets.isError}
