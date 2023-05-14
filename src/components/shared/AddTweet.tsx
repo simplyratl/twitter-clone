@@ -30,6 +30,7 @@ const AddTweet = () => {
 
       if (session.status !== "authenticated") return;
 
+      // @ts-ignore
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
         if (oldData == null || oldData.pages[0] == null) return;
 
