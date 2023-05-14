@@ -33,6 +33,32 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model Tweet {
+  id             String   @id @default(uuid())
+  userId         String
+  content        String   @db.Text
+  createdAt      DateTime @default(now())
+  multimedia     String?  @db.Text
+  multimediaType String?  @default("image")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes Like[]
+
+  @@unique([createdAt, id])
+  @@index([userId])
+}
+
+model Like {
+  userId  String
+  tweetId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tweetId])
+  @@index([userId])
+  @@index([tweetId])
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -49,6 +75,11 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  tweets    Tweet[]
+  likes     Like[]
+  followers User[]  @relation(name: "Followers")
+  follows   User[]  @relation(name: "Followers")
 }
 
 model VerificationToken {
