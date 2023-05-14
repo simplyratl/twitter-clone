@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useRef, useState } from "react";
+import React, { type SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
 import ProfileImage from "~/components/shared/ProfileImage";
 import { useSession } from "next-auth/react";
@@ -30,6 +30,7 @@ const AddTweet = () => {
 
       if (session.status !== "authenticated") return;
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
         if (oldData == null || oldData.pages[0] == null) return;

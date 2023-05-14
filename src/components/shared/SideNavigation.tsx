@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { type ReactNode, useEffect, useState } from "react";
 import { navLinks } from "~/constants/nav";
 import Link from "next/link";
 import HoverEffect from "~/utils/style/HoverEffect";

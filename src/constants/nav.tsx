@@ -1,5 +1,5 @@
 import { HiOutlineHashtag, HiOutlineUser } from "react-icons/hi2";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export type NavLink = {
   name: string;
