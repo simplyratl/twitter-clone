@@ -3,15 +3,21 @@ import Image from "next/image";
 
 type Props = {
   src: string;
+  size?: number;
 };
 
-const ProfileImage = ({ src }: Props) => {
+const ProfileImage = ({ src, size = 12 }: Props) => {
+  const calculateSize = () => {
+    return size * 4;
+  };
+
   return (
     <Image
-      className="h-12 w-12 rounded-full object-cover"
+      className={`rounded-full object-cover`}
+      style={{ width: calculateSize(), height: calculateSize() }}
       src={src}
-      width={48}
-      height={48}
+      width={calculateSize()}
+      height={calculateSize()}
       alt="Profile Image"
     />
   );

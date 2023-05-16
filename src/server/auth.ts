@@ -21,6 +21,10 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       // role: UserRole;
+      verified: boolean;
+      createdAt: Date;
+      tagName: string;
+      backgroundImage: string;
     } & DefaultSession["user"];
   }
 

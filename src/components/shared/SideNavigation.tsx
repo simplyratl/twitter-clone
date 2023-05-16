@@ -54,6 +54,7 @@ const SideNavigation = () => {
           </li>
         </HoverEffect>
 
+        {session.data?.user && (
         <HoverEffect>
           <li className={`px-4 py-2 text-2xl text-black dark:text-white`}>
             <Link
@@ -67,6 +68,7 @@ const SideNavigation = () => {
             </Link>
           </li>
         </HoverEffect>
+        )}
 
         <HoverEffect>
           <li

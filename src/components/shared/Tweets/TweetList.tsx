@@ -1,6 +1,7 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Tweet from "~/components/shared/Tweets/Tweet";
+import { memo } from "react";
 
 export type TweetProps = {
   multimedia?: string;
@@ -10,7 +11,8 @@ export type TweetProps = {
   createdAt: Date;
   likes: number;
   likedByMe: boolean;
-  user: { id: string; name: string; image: string | null };
+  user: { id: string; name: string; image: string | null; verified?: boolean };
+  verified?: boolean;
 };
 
 type TweetListProps = {
@@ -28,11 +30,21 @@ const TweetList = ({
   hasMore,
   fetchNextPage,
 }: TweetListProps) => {
-  if (isLoading) return <h1>Loading...</h1>;
-  if (isError) return <h1>Error...</h1>;
-  if (!tweets) return <h1>No tweets...</h1>;
+  if (isLoading)
+    return <h1 className="mt-4 text-center text-xl font-bold">Loading...</h1>;
+  if (isError)
+    return <h1 className="mt-4 text-center text-xl font-bold">Error...</h1>;
+  if (!tweets)
+    return (
+      <h1 className="mt-4 text-center text-xl font-bold">No tweets found.</h1>
+    );
 
-  if (tweets.length === 0) return <h1>No tweets...</h1>;
+  if (tweets.length === 0)
+    return (
+      <h1 className="mt-4 text-center text-xl font-bold">
+        Currently, there are no tweets.
+      </h1>
+    );
 
   return (
     <div>
@@ -50,4 +62,4 @@ const TweetList = ({
   );
 };
 
-export default TweetList;
+export default memo(TweetList);

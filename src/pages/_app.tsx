@@ -13,8 +13,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className="bg-white pb-32 dark:bg-black sm:p-0">
-        <div className="mx-auto flex max-w-4xl sm:justify-between md:px-4 lg:justify-start">
+      <div className="sm:min-h-auto min-h-screen bg-white pb-32 dark:bg-black sm:p-0">
+        <div className="mx-auto flex max-w-[58rem] sm:justify-between md:px-4 lg:justify-start">
           <SideNavigation />
 
           <main className="flex-[6] dark:border-neutral-700 sm:border-l sm:border-r md:flex-[3]">

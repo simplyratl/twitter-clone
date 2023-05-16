@@ -11,6 +11,7 @@ import { type TweetProps } from "~/components/shared/Tweets/TweetList";
 import moment from "moment";
 import { api } from "~/utils/api";
 import Image from "next/image";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 const CommentIcon = () => {
   return (
@@ -92,6 +93,14 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
       };
 
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData);
+      trpcUtils.tweet.infiniteFeed.setInfiniteData(
+        { onlyFollowing: true },
+        updateData
+      );
+      trpcUtils.tweet.infiniteProfileFeed.setInfiniteData(
+        { userId: tweet.user.id },
+        updateData
+      );
     },
   });
 
@@ -113,6 +122,24 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
     }
   };
 
+  const formatText = (text: string) => {
+    const formattedText = text.split(" ").map((word: string, index: number) => {
+      if (word.startsWith("#")) {
+        return (
+          <Link
+            href={`/search/${word.replace("#", "")}`}
+            key={index}
+            className="cursor-pointer text-blue-500 hover:link"
+          >
+            {word}{" "}
+          </Link>
+        );
+      }
+      return <span key={index}>{word} </span>;
+    });
+    return formattedText;
+  };
+
   return (
     <article className="relative z-[1] border-b border-t px-4 py-6 transition-colors duration-200 first:border-none last:border-none hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-900">
       <div className="flex gap-3">
@@ -126,8 +153,13 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
         <div>
           <div className="flex gap-2">
             <Link href={`/profile/${tweet.user.id}`}>
-              <p className="text-lg text-black hover:link dark:text-white">
+              <p className="flex items-center justify-center gap-[2px] text-lg text-black hover:link dark:text-white">
                 {tweet.user.name}
+                {tweet.user.verified && (
+                  <span className="text-blue-500">
+                    <VscVerifiedFilled className="h-5 w-5" />
+                  </span>
+                )}
               </p>
             </Link>
             <div
@@ -141,7 +173,9 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-black dark:text-white">{tweet.content}</p>
+            <p className="text-black dark:text-white">
+              {formatText(tweet.content)}
+            </p>
 
             {tweet.multimedia && (
               <div className="relative h-full w-fit overflow-hidden rounded-2xl">

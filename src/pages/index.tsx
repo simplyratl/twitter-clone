@@ -5,6 +5,10 @@ import { useSession } from "next-auth/react";
 import TweetList from "~/components/shared/Tweets/TweetList";
 import { api } from "~/utils/api";
 import LoadingModal from "~/components/shared/LoadingModal";
+import { useState } from "react";
+import Header from "~/components/shared/Header";
+
+const TABS = ["Recent", "Following"];
 
 function RecentTweets() {
   const tweets = api.tweet.infiniteFeed.useInfiniteQuery(
@@ -27,8 +31,31 @@ function RecentTweets() {
   );
 }
 
+function FollowingTweets() {
+  const tweets = api.tweet.infiniteFeed.useInfiniteQuery(
+    { onlyFollowing: true },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
+
+  return (
+    <TweetList
+      //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
+      isError={tweets.isError}
+      isLoading={tweets.isLoading}
+      hasMore={tweets.hasNextPage ?? false}
+      fetchNextPage={tweets.fetchNextPage}
+    ></TweetList>
+  );
+}
+
 const Home: NextPage = () => {
   const session = useSession();
+  const [selectedTab, setSelectedTab] =
+    useState<(typeof TABS)[number]>("Recent");
 
   return (
     <>
@@ -38,16 +65,31 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="relative h-full">
-        <header className="sticky left-0 top-0 z-50 flex h-16 w-full items-center bg-white bg-opacity-60 px-4 backdrop-blur-sm dark:bg-black">
-          <h1 className="text-2xl font-bold text-black dark:text-white">
-            Explore
-          </h1>
-        </header>
-
+        <Header title={"Explore"}>
+          <div className="tabs tabs-boxed mt-4 bg-transparent p-0">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                className="tab h-12 flex-1 !rounded-none dark:hover:bg-neutral-900"
+                onClick={() => setSelectedTab(tab)}
+              >
+                <span
+                  className={`relative text-lg before:absolute before:-bottom-[10px] before:h-[3px] before:w-full before:rounded-full before:bg-blue-500 ${
+                    selectedTab === tab
+                      ? "font-bold text-black before:block dark:text-white"
+                      : "text-neutral-400 before:hidden dark:text-neutral-500"
+                  }`}
+                >
+                  {tab}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Header>
         {session.data?.user && <AddTweet />}
 
         <div>
-          <RecentTweets />
+          {selectedTab === "Recent" ? <RecentTweets /> : <FollowingTweets />}
         </div>
       </section>
     </>

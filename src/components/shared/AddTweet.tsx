@@ -1,10 +1,9 @@
 import React, { type SyntheticEvent, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import ProfileImage from "~/components/shared/ProfileImage";
 import { useSession } from "next-auth/react";
 import TextareaAutosize from "react-textarea-autosize";
 import {
-  HiOutlineGif,
+  HiOutlineFire,
   HiOutlineGlobeAmericas,
   HiOutlinePhoto,
   HiOutlineXMark,
@@ -16,6 +15,9 @@ import { CDNURL, supabase } from "../../../supabase";
 import Image from "next/image";
 import LoadingModal from "~/components/shared/LoadingModal";
 import { v4 as uuid } from "uuid";
+import EmojiPicker, { type Theme } from "emoji-picker-react";
+import useColorMode from "~/utils/hooks/useColorMode";
+import TweetEditor from "~/components/shared/Tweets/TweetEditor";
 
 const AddTweet = () => {
   const session = useSession();
@@ -23,6 +25,7 @@ const AddTweet = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
   useEffect(() => {
     if (loading) {
@@ -31,6 +34,8 @@ const AddTweet = () => {
       document.body.style.overflow = "unset";
     }
   }, [loading]);
+
+  const [colorMode, setColorMode] = useColorMode();
 
   if (!session.data?.user) return null;
 
@@ -56,6 +61,8 @@ const AddTweet = () => {
             id: session.data.user.id,
             name: session.data.user.name || null,
             image: session.data.user.image || null,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            verified: session.data.user.verified || false,
           },
         };
 
@@ -133,13 +140,15 @@ const AddTweet = () => {
 
             <div className="mt-2 flex flex-col gap-2 border-b pb-4 dark:border-neutral-600">
               <TextareaAutosize
-                className="h-full w-full resize-none bg-transparent text-xl placeholder-neutral-500 outline-none"
+                className="h-full w-full resize-none bg-transparent text-xl text-black placeholder-neutral-500 outline-none dark:text-white"
                 maxLength={280}
                 placeholder="What is happening?!"
                 name="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
+
+              {/*<TweetEditor />*/}
 
               <p className="poiter-events-none mt-2 flex cursor-default items-center gap-1 text-blue-500">
                 <HiOutlineGlobeAmericas className="h-5 w-5" /> Everyone can
@@ -165,13 +174,31 @@ const AddTweet = () => {
                         </div>
                       </HoverEffect>
                     </div>
-                    <HoverEffect blue>
-                      <div className="h-9 w-9">
-                        <span className="flex h-full items-center justify-center text-xl">
-                          <HiOutlineGif />
-                        </span>
-                      </div>
-                    </HoverEffect>
+                    <div className="relative">
+                      <HoverEffect blue>
+                        <div
+                          className="relative h-9 w-9"
+                          onClick={() => setEmojiPicker(!emojiPicker)}
+                        >
+                          <span className="flex h-full items-center justify-center text-xl">
+                            <HiOutlineFire />
+                          </span>
+                        </div>
+                      </HoverEffect>
+
+                      {emojiPicker && (
+                        <div className="absolute z-40 h-full">
+                          <EmojiPicker
+                            theme={(colorMode as Theme) ?? "light"}
+                            width={300}
+                            height={400}
+                            onEmojiClick={(emoji) =>
+                              setContent(content + emoji.emoji)
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <Button>Tweet</Button>
@@ -184,6 +211,7 @@ const AddTweet = () => {
                   <button
                     type="button"
                     className="absolute left-2 top-2 z-50 cursor-pointer rounded-full bg-neutral-800 bg-opacity-80 p-2 text-2xl"
+                    suppressContentEditableWarning
                     onClick={() => setFile(undefined)}
                   >
                     <HiOutlineXMark />
