@@ -8,6 +8,7 @@ import {
 } from "~/server/api/trpc";
 import { type Like, type Prisma } from ".prisma/client";
 import { type inferAsyncReturnType } from "@trpc/server";
+import { notification } from "~/components/shared/Alerts";
 
 export const tweetRouter = createTRPCRouter({
   create: protectedProcedure
@@ -179,7 +180,13 @@ async function getInfiniteTweets({
       likes:
         currentUserId == null ? false : { where: { userId: currentUserId } },
       user: {
-        select: { id: true, name: true, image: true, verified: true },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          verified: true,
+          tagName: true,
+        },
       },
     },
   });

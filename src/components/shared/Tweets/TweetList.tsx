@@ -11,7 +11,13 @@ export type TweetProps = {
   createdAt: Date;
   likes: number;
   likedByMe: boolean;
-  user: { id: string; name: string; image: string | null; verified?: boolean };
+  user: {
+    id: string;
+    name: string;
+    image: string | null;
+    verified?: boolean;
+    tagName: string | null;
+  };
   verified?: boolean;
 };
 

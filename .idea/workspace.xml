@@ -6,20 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="e3a3c5f5-1851-4709-9294-13f29c8016e6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared/AddTweet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/AddTweet.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/shared/ProfileImage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/ProfileImage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/shared/SearchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/SearchBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shared/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared/SideNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/SideNavigation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared/Tweets/Tweet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/Tweets/Tweet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shared/Tweets/TweetEditor.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared/Tweets/TweetList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/Tweets/TweetList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/src/env.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/profile/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/profile/[id].tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/api/root.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/root.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/api/routers/tweet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/routers/tweet.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/api/routers/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/routers/users.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/auth.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +35,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2PmM6DhVwgGlpXXscChQaWndmvY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -44,7 +46,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/nikic/Documents/Projects/bone_nlb_projekat",
+    "last_opened_file_path": "C:/Users/nikic/Documents/Projects/bone_nlb_mobile",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,6 +57,12 @@
     "ts.external.directory.path": "C:\\Users\\nikic\\Documents\\Projects\\twitter-clone\\node_modules\\typescript\\lib"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nikic\Documents\Projects\twitter-clone\src\pages\auth" />
+      <recent name="C:\Users\nikic\Documents\Projects\twitter-clone\src\pages\api\auth" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -70,6 +78,13 @@
       <workItem from="1684134511869" duration="626000" />
       <workItem from="1684140784058" duration="5374000" />
       <workItem from="1684223274116" duration="119000" />
+      <workItem from="1684262218454" duration="2475000" />
+      <workItem from="1684307152487" duration="4292000" />
+      <workItem from="1684393581831" duration="88000" />
+      <workItem from="1684925196174" duration="3158000" />
+      <workItem from="1684998444852" duration="2683000" />
+      <workItem from="1685001652981" duration="7170000" />
+      <workItem from="1685086237493" duration="1032000" />
     </task>
     <servers />
   </component>

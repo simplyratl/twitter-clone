@@ -18,7 +18,7 @@ const Header = ({ children, title, back, search }: HeaderProps) => {
         {back && (
           <Link href={".."}>
             <HoverEffect>
-              <HiArrowSmallLeft className="mr-2 h-10 w-10 p-2 text-black dark:text-white" />
+              <HiArrowSmallLeft className="h-10 w-10 p-2 text-black dark:text-white" />
             </HoverEffect>
           </Link>
         )}
@@ -26,7 +26,7 @@ const Header = ({ children, title, back, search }: HeaderProps) => {
         {!search ? (
           <h1
             className={`text-2xl font-bold text-black dark:text-white ${
-              back ? "relative bottom-[2px]" : ""
+              back ? "relative bottom-[2px] ml-3" : ""
             }`}
           >
             {title}

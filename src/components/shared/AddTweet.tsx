@@ -17,7 +17,6 @@ import LoadingModal from "~/components/shared/LoadingModal";
 import { v4 as uuid } from "uuid";
 import EmojiPicker, { type Theme } from "emoji-picker-react";
 import useColorMode from "~/utils/hooks/useColorMode";
-import TweetEditor from "~/components/shared/Tweets/TweetEditor";
 
 const AddTweet = () => {
   const session = useSession();
@@ -103,6 +102,7 @@ const AddTweet = () => {
         .upload(`${session.data.user.id}_${uuid()}`, file);
 
       if (error) {
+        return;
         console.log(error);
       } else {
         multimediaURL = `${CDNURL}/${data?.path}`;

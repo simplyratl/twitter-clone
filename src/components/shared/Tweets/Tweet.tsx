@@ -153,11 +153,18 @@ const Tweet = ({ tweet }: TweetPropsCard) => {
         <div>
           <div className="flex gap-2">
             <Link href={`/profile/${tweet.user.id}`}>
-              <p className="flex items-center justify-center gap-[2px] text-lg text-black hover:link dark:text-white">
-                {tweet.user.name}
-                {tweet.user.verified && (
-                  <span className="text-blue-500">
-                    <VscVerifiedFilled className="h-5 w-5" />
+              <p className="flex items-center justify-center gap-[2px] text-lg text-black dark:text-white">
+                <span className="flex items-center gap-[2px] hover:link">
+                  {tweet.user.name}
+                  {tweet.user.verified && (
+                    <span className="text-blue-500">
+                      <VscVerifiedFilled className="h-5 w-5" />
+                    </span>
+                  )}
+                </span>
+                {tweet.user.tagName && (
+                  <span className="text-base text-neutral-500">
+                    @{tweet.user.tagName}
                   </span>
                 )}
               </p>

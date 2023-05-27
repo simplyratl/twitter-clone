@@ -22,6 +22,7 @@ export const usersRouter = createTRPCRouter({
           createdAt: true,
           backgroundImage: true,
           tagName: true,
+          email: currentUserId ? true : undefined,
           verified: true,
           _count: {
             select: {
@@ -44,6 +45,8 @@ export const usersRouter = createTRPCRouter({
         ...profile,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         isFollowing: !!profile?.followers?.length,
+        followersCount: profile?._count?.followers,
+        followsCount: profile?._count?.follows,
       };
     }),
   searchUser: publicProcedure
